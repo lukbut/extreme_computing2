@@ -1,1 +1,0 @@
-cat /afs/inf.ed.ac.uk/group/teaching/exc/ex2/part4/queriesSmall.txt | ./program.py
