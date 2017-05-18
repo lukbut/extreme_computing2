@@ -1,0 +1,18 @@
+#!/usr/bin/python
+
+import sys
+import os
+
+for line in sys.stdin:                  # input from standard input
+    line = line.strip()                 # remove whitespaces
+    tokens = line.split()
+    try:
+        input_file = os.environ['mapreduce_map_input_file']
+    except KeyError:
+        input_file = os.environ['map_input_file']
+
+    input_file = input_file.strip()
+    input_file_tokens = input_file.split("/")
+
+    for token in tokens:
+        print("{0}\t{1}\t{2}".format(token,input_file_tokens[-1],1))

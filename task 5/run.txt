@@ -1,0 +1,3 @@
+hdfs dfs -rm -r /user/$USER/assignment2/task5/
+#This code was adapted from http://had00b.blogspot.co.uk/2013/07/random-subset-in-mapreduce.html
+hadoop jar /opt/hadoop/hadoop-2.7.3/share/hadoop/tools/lib/hadoop-streaming-2.7.3.jar -D mapreduce.job.output.key.comparator.class=org.apache.hadoop.mapreduce.lib.partition.KeyFieldBasedComparator -D mapreduce.partition.keycomparator.options=-n -D mapred.reduce.tasks=1 -input /data/assignments/ex2/part3/webLarge.txt -output /user/$USER/assignment2/task5/ -mapper "mapper.py 1" -file mapper.py -reducer "reducer.py 1" -file reducer.py

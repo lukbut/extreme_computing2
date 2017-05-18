@@ -1,0 +1,68 @@
+#!/usr/bin/python
+#This code was adapted from the labs
+import sys
+
+prev_word = ""
+prev_file = ""
+file_total = 0
+word_total = 0
+word = ""
+curr_file = ""
+file_list = []
+
+for line in sys.stdin:          # For ever line in the input from stdin
+    line = line.strip()         # Remove trailing characters
+    word, curr_file, value = line.split("\t")
+    value = int(value)
+
+    # Remember that Hadoop sorts map output by key reducer takes these keys sorted
+    if prev_word == word:
+        if prev_file == curr_file:
+            file_total += value
+        elif prev_file <> curr_file:
+        #add file counts to array
+        #and move to next file   
+            array_entry = ''.join((prev_file,"\t",str(file_total)))
+            file_list.append(array_entry)
+            file_total = value
+            prev_file = curr_file
+            word_total += 1
+    elif prev_word <> word:
+        #print previous 
+        if prev_word:
+            array_entry = prev_file + "\t" + str(file_total)
+            file_list.append(array_entry)
+            file_total += value
+
+            string = ''.join((prev_word,": ",str(word_total)," :  {"))
+            prev = False
+            for fil_val in file_list:
+                fil, val = fil_val.split("\t")
+                if prev == False:
+                    prev = True
+                    string =''.join((string,"(",fil,", ",val,")"))
+                elif prev == True:
+                    string =''.join((string,", (",fil,", ",val,")"))
+            string = ''.join((string, "}"))
+            print(string)
+        file_list = []
+        word_total = 1
+        file_total = value
+        prev_file = curr_file
+        prev_word = word
+
+if prev_word == word:  # Don't forget the last key/value pair
+    array_entry = ''.join((prev_file,"\t",str(file_total)))
+    file_list.append(array_entry)
+
+    string = ''.join((prev_word,": ",str(word_total)," :  {"))
+    prev = False
+    for fil_val in file_list:
+        fil, val = fil_val.split("\t")
+        if prev == False:
+            prev = True
+            string =''.join((string,"(",fil,", ",val,")"))
+        elif prev == True:
+            string =''.join((string,", (",fil,", ",val,")"))
+        string = ''.join((string, "}"))
+        print(string)

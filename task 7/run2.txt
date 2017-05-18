@@ -1,0 +1,1 @@
+cat webSmall.txt | ./program.py 95350 > no_duplicates.txt

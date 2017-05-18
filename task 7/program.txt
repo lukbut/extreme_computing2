@@ -1,0 +1,49 @@
+#!/usr/bin/python
+# This code was taken from http://www.maxburstein.com/blog/creating-a-simple-bloom-filter/, and modified
+
+from bitarray import bitarray
+import mmh3
+import sys
+import math
+
+lines = int(sys.argv[1])
+
+class BloomFilter:
+
+    def __init__(self, size, hash_count):
+        self.size = size
+        self.hash_count = hash_count
+        self.bit_array = bitarray(size)
+        self.bit_array.setall(0)
+
+    def add(self, string):
+        for seed in xrange(self.hash_count):
+            result = mmh3.hash(string, seed) % self.size
+            self.bit_array[result] = 1
+
+    def lookup(self, string):
+        for seed in xrange(self.hash_count):
+            result = mmh3.hash(string, seed) % self.size
+            if self.bit_array[result] == 0:
+                return "Nope"
+        return "Probably"
+
+#Calculating length of bloom filter
+#using m= -(n.lnp/(ln2)^2), where n is the number of lines of the file, and p is the false
+#positive rate needed. Also from above link.
+
+m =int(-((lines*math.log(0.01))/(math.pow(math.log(2),2))))
+
+#Calculating the number of hash functions using
+# k = (m/n)*ln2, where m is the length of the bloom filter
+# and n is the number of lines of the file.
+
+k = int((m/lines)*math.log(2))
+
+bf = BloomFilter(m, k)
+
+for line in sys.stdin:
+    line = line.strip()
+    if bf.lookup(line) == "Nope" and len(line) > 0:
+        bf.add(line)
+        print(line)

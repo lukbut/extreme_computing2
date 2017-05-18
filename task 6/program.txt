@@ -1,0 +1,15 @@
+#!/usr/bin/python
+# This code was taken from http://had00b.blogspot.co.uk/2013/07/random-subset-in-mapreduce.html, and modified
+
+import sys, random
+from heapq import heappush, heapreplace
+
+k = 100
+H = []
+
+for x in sys.stdin:
+  r = random.random() # this is the id
+  if len(H) < k: heappush(H, (r, x))
+  elif r > H[0][0]: heapreplace(H, (r, x)) # H[0] is the root of the heap, H[0][0] its id
+
+print ''.join([x for (r,x) in H]),

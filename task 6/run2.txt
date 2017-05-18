@@ -1,0 +1,1 @@
+cat webSmall.txt | ./program.py > output.out

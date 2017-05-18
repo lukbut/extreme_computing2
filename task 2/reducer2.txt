@@ -1,0 +1,15 @@
+#!/usr/bin/python
+
+# Code adapted from labs
+
+import sys
+
+i = 0
+
+for line in sys.stdin:          # For ever line in the input from stdin
+    line = line.strip()         # Remove trailing characters
+    tokens = line.split("\t")
+
+    if i < 10:
+        print("{0} {1}".format(tokens[0],tokens[1]))
+        i += 1

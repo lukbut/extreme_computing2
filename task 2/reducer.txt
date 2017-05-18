@@ -1,0 +1,14 @@
+#!/usr/bin/python
+
+# Code adapted from labs
+
+import sys
+
+i = 0
+
+for line in sys.stdin:          # For ever line in the input from stdin
+    line = line.strip()         # Remove trailing characters
+
+    if i < 10:
+        print(line)
+        i += 1

@@ -1,0 +1,54 @@
+#!/usr/bin/python
+
+import sys
+
+highest_prev_posts=[]
+curr_posts=[]
+
+highest_owner_id = -1
+prev_owner_id = -1
+owner_id = -1
+
+post_id = -1
+
+output=""
+
+for line in sys.stdin:          # For ever line in the input from stdin
+    line = line.strip()         # Remove trailing characters
+
+    owner_id, post_id = line.split("\t")
+
+    if prev_owner_id == -1:
+        prev_owner_id = owner_id
+        curr_posts.append(post_id) #Store in array
+    elif prev_owner_id == owner_id:
+        curr_posts.append(post_id) #Store in array
+    else:
+        if highest_owner_id <> -1:  #check previous highest count, and if lower, replace with current
+            if len(highest_prev_posts) < len(curr_posts):
+                highest_prev_posts = curr_posts
+                highest_owner_id = prev_owner_id
+        if highest_owner_id == -1:
+                highest_prev_posts = curr_posts
+                highest_owner_id = prev_owner_id
+
+        prev_owner_id = owner_id
+        curr_posts=[]
+        curr_posts.append(post_id)
+
+if prev_owner_id == owner_id:  # Don't forget the last key/value pair
+        if highest_owner_id <> -1:  #check previous highest count, and if lower, replace with current
+            if len(highest_prev_posts) < len(curr_posts):
+                highest_prev_posts = curr_posts
+                highest_owner_id = prev_owner_id
+            if highest_owner_id == -1:
+                highest_prev_posts = curr_posts
+                highest_owner_id = prev_owner_id
+
+for post in highest_prev_posts:
+    if len(output) == 0:
+        output = post
+    elif len(output) > 0:
+        output = output + ", " + post
+print("{0} -> {1}".format(highest_owner_id, output))
+                                                                                                                                                                   

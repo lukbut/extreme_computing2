@@ -1,0 +1,11 @@
+#!/usr/bin/python
+
+# Code adapted from labs
+# Inspired by http://stackoverflow.com/questions/18395998/hadoop-map-reduce-secondary-sorting
+
+import sys
+
+for line in sys.stdin:                  # input from standard input
+    line = line.strip()                 # remove whitespaces
+
+    print(line)
